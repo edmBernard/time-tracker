@@ -1,0 +1,3 @@
+[submodule "third-party/cxxsubs"]
+	path = third-party/cxxsubs
+	url = https://github.com/edmBernard/cxxsubs.git
