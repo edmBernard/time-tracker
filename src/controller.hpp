@@ -16,10 +16,10 @@ public:
       : filename(filename) {
   }
 
-  void add(const std::string &task) {
+  void add(const std::string &task, const std::string &status) {
     std::ofstream outfile;
     outfile.open(this->filename, std::ios_base::app); // append instead of overwrite
-    outfile << lineFormatter(std::chrono::system_clock::now(), "begin", task);
+    outfile << lineFormatter(std::chrono::system_clock::now(), status, task);
     outfile.close();
   }
 

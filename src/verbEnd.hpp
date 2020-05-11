@@ -6,10 +6,10 @@
 
 #include <fstream>
 
-class OptionsBegin : public cxxsubs::IOptions {
+class OptionsEnd : public cxxsubs::IOptions {
 public:
-  OptionsBegin()
-      : cxxsubs::IOptions({"begin"}, "Initialise repository") {
+  OptionsEnd()
+      : cxxsubs::IOptions({"end"}, "Initialise repository") {
     this->options.add_options()
       ("t,task", "Task name", cxxopts::value<std::string>())
       ("help", "Print help");
@@ -30,7 +30,7 @@ public:
     auto task = (*this->parse_result)["task"].as<std::string>();
     std::cout << "command : " << this->get_verbs() << ": " << task << std::endl;
     Controller controller;
-    controller.add(task, "begin");
+    controller.add(task, "end");
 
   };
 };
