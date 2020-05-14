@@ -39,7 +39,7 @@ public:
 
       std::string task;
       std::getline(ss, task, delim);
-      std::size_t found = task.rfind(search);
+      std::size_t found = task.rfind(search, 0);
       if (found == 0 || search.empty()) {
         tasks.insert(task);
       }
