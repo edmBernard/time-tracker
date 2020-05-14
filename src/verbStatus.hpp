@@ -10,7 +10,7 @@ template <typename T>
 class OptionsStatus : public cxxsubs::IOptions {
 public:
   OptionsStatus()
-      : cxxsubs::IOptions({T::verbname}, "Initialise repository") {
+      : cxxsubs::IOptions({T::verbname}, "Add task with " + std::string(T::verbname) + " marker") {
     this->options.add_options()
       ("t,task", "Task name", cxxopts::value<std::string>())
       ("help", "Print help");

@@ -4,11 +4,11 @@
 #include <date/date.h>
 #include <fmt/format.h>
 
-#include <fstream>
-#include <string>
 #include <chrono>
+#include <fstream>
 #include <iostream>
-
+#include <set>
+#include <string>
 
 class Controller {
 public:
@@ -23,9 +23,31 @@ public:
     outfile.close();
   }
 
+  std::vector<std::string> taskList(const std::string &search) {
+    std::ifstream infile;
+    std::string line;
+    const char delim = ';';
 
+    std::set<std::string> tasks;
+    infile.open(this->filename, std::ios_base::in);
+    while (getline(infile, line)) {
+      std::stringstream ss(line);
 
+      std::string trash;
+      std::getline(ss, trash, delim); // discard date
+      std::getline(ss, trash, delim); // discard marker
 
+      std::string task;
+      std::getline(ss, task, delim);
+      std::size_t found = task.rfind(search);
+      if (found == 0 || search.empty()) {
+        tasks.insert(task);
+      }
+    }
+    infile.close();
+
+    return std::vector<std::string>(tasks.begin(), tasks.end());
+  }
 
 private:
   std::string lineFormatter(const std::chrono::time_point<std::chrono::system_clock> &time_point, const std::string &tag, const std::string &task) {
@@ -36,20 +58,19 @@ private:
   std::string dateFormatter(const std::chrono::time_point<std::chrono::system_clock> &time_point) {
     using namespace date;
     auto daypoint = floor<days>(time_point);
-    auto ymd = year_month_day(daypoint);   // calendar date
+    auto ymd = year_month_day(daypoint);         // calendar date
     auto tod = make_time(time_point - daypoint); // Yields time_of_day type
 
     // Obtain individual components as integers
-    auto y   = int(ymd.year());
-    auto m   = unsigned(ymd.month());
-    auto d   = unsigned(ymd.day());
-    auto h   = tod.hours().count();
+    auto y = int(ymd.year());
+    auto m = unsigned(ymd.month());
+    auto d = unsigned(ymd.day());
+    auto h = tod.hours().count();
     auto min = tod.minutes().count();
-    auto s   = tod.seconds().count();
+    auto s = tod.seconds().count();
 
     return fmt::format("{0}-{1:02}-{2:02} {3:02}:{4:02}:{5:02}", y, m, d, h, min, s);
   }
 
   std::string filename;
-
 };
