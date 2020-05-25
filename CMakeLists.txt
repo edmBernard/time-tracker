@@ -6,8 +6,9 @@ cmake_minimum_required(VERSION 3.5)
 
 #**************************************************************************************************
 # Find Package ************************************************************************************
-find_package(cxxopts REQUIRED)
+find_package(cxxopts CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
+find_package(replxx CONFIG REQUIRED)
 
 #**************************************************************************************************
 # Include *****************************************************************************************
@@ -45,4 +46,4 @@ SET(SOURCES
 # Make configuration ******************************************************************************
 add_executable(time-tracker ${SOURCES})
 set_property(TARGET time-tracker PROPERTY CXX_STANDARD 17)
-target_link_libraries(time-tracker -pthread -lstdc++fs fmt::fmt)
+target_link_libraries(time-tracker -pthread -lstdc++fs fmt::fmt REPLXX::replxx)

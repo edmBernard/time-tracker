@@ -1,6 +1,7 @@
 
 #include <verbShow.hpp>
 #include <verbStatus.hpp>
+#include <verbRepl.hpp>
 #include <verbTaskCompletion.hpp>
 
 #include <cxxsubs.hpp>
@@ -11,7 +12,7 @@
 
 int main(int argc, char *argv[]) {
   try {
-    cxxsubs::Verbs<cxxsubs::CompletionCommand, OptionsStatus<Begin>, OptionsStatus<End>, OptionsTaskCompletion>(argc, argv);
+    cxxsubs::Verbs<cxxsubs::CompletionCommand, OptionsStatus<Begin>, OptionsStatus<End>, OptionsRepl, OptionsTaskCompletion>(argc, argv);
 
   } catch (const cxxopts::OptionException &e) {
     std::cout << "Error: parsing options: " << e.what() << std::endl;
