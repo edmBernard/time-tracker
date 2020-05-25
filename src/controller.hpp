@@ -12,7 +12,7 @@
 
 class Controller {
 public:
-  Controller(std::string filename = "time-tracker.csv")
+  Controller(std::string filename = "timetracker.csv")
       : filename(filename) {
   }
 

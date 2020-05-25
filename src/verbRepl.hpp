@@ -66,7 +66,7 @@ public:
     Replxx rx;
     Controller controller;
 
-    std::string history_file{"./time-tracker-repl-history.txt"};
+    std::string history_file{"./timetracker-history.txt"};
     rx.history_load(history_file);
     rx.set_completion_callback( std::bind( &hook_completion, std::placeholders::_1, std::placeholders::_2, std::ref(controller)));
 

@@ -44,6 +44,6 @@ SET(SOURCES
 
 #**************************************************************************************************
 # Make configuration ******************************************************************************
-add_executable(time-tracker ${SOURCES})
-set_property(TARGET time-tracker PROPERTY CXX_STANDARD 17)
-target_link_libraries(time-tracker -pthread -lstdc++fs fmt::fmt REPLXX::replxx)
+add_executable(timetracker ${SOURCES})
+set_property(TARGET timetracker PROPERTY CXX_STANDARD 17)
+target_link_libraries(timetracker -pthread -lstdc++fs fmt::fmt REPLXX::replxx)
