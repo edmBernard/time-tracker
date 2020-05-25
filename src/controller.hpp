@@ -23,7 +23,7 @@ public:
     outfile.close();
   }
 
-  std::vector<std::string> taskList(const std::string &search) {
+  std::vector<std::string> taskList(const std::string &search) const {
     std::ifstream infile;
     std::string line;
     const char delim = ';';
