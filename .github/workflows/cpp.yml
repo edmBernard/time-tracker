@@ -21,10 +21,6 @@ jobs:
           triplet: "x64-windows"
           artifact: Release
           build_type: "Release"
-        - os: windows-latest
-          triplet: "x86-windows"
-          artifact: Release
-          build_type: "Release"
 
     runs-on: ${{ matrix.config.os }}
 
