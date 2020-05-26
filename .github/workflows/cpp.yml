@@ -26,6 +26,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      submodules: 'true'
     - name: Install (gcc-9) (Linux)
       if: runner.os == 'Linux'
       run: |
