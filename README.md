@@ -32,7 +32,7 @@ cmake .. -DCMAKE_TOOLCHAIN_FILE=${VCPKG_DIR}/scripts/buildsystems/vcpkg.cmake
 cmake --build . --config Release
 ```
 
-the server executable is named `koth-snake-server`
+the server executable is named `timetracker`
 
 ## Disclaimer
 
