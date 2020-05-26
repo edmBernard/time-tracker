@@ -14,7 +14,7 @@ jobs:
         config:
         - os: ubuntu-latest
           triplet: "x64-linux"
-          artifact: uws
+          artifact: timetracker
           compiler: g++-9
           build_type: "Release"
         - os: windows-latest
@@ -26,6 +26,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: 'true'
     - name: Install (gcc-9) (Linux)
       if: runner.os == 'Linux'
       run: |
