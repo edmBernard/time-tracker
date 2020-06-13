@@ -9,6 +9,7 @@
 #include <iostream>
 #include <set>
 #include <string>
+#include <tuple>
 
 class Controller {
 public:
@@ -21,6 +22,31 @@ public:
     outfile.open(this->filename, std::ios_base::app); // append instead of overwrite
     outfile << lineFormatter(std::chrono::system_clock::now(), status, task);
     outfile.close();
+  }
+
+  std::vector<std::tuple<std::string, std::string, std::string>> list(int limit) const {
+    std::ifstream infile;
+    std::string line;
+    const char delim = ';';
+
+    std::vector<std::tuple<std::string, std::string, std::string>> tasks;
+
+    infile.open(this->filename, std::ios_base::in);
+    while (getline(infile, line)) {
+      std::stringstream ss(line);
+
+      std::string date;
+      std::string status;
+      std::string task;
+      std::getline(ss, date, delim);
+      std::getline(ss, status, delim);
+      std::getline(ss, task, delim);
+
+      tasks.push_back({date, status, task});
+    }
+    infile.close();
+
+    return std::vector<std::tuple<std::string, std::string, std::string>>(tasks.end()-limit, tasks.end());;
   }
 
   std::vector<std::string> taskList(const std::string &search) const {
