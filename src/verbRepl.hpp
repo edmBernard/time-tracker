@@ -94,19 +94,20 @@ public:
 
       rx.history_add(input);
 
-      const char delim = ' ';
-      std::stringstream ss(input);
+      // split string by space
+      std::istringstream iss(input);
+      std::vector<std::string> result{std::istream_iterator<std::string>(iss), {}};
 
-      std::string command;
-      std::getline(ss, command, delim); // discard date
-      std::string task;
-      std::getline(ss, task, delim); // discard marker
-
-      if (command == "begin" || command == "end") {
-        controller.add(task, command);
+      if (result[0] == "begin" || result[0] == "end") {
+        if (result.size() == 2) {
+          controller.add(result[1], result[0]);
+        } else {
+          std::cout << "Wrong number of argument to begin/end command" << std::endl;
+        }
         continue;
       }
-      if (command == "list") {
+
+      if (result[0] == "list") {
         auto tasks = controller.list(5);
         for (auto & i : tasks) {
           fmt::print("{: <30} {: <10} {}\n", std::get<0>(i), std::get<1>(i), std::get<2>(i));
