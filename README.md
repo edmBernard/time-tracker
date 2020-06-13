@@ -22,7 +22,7 @@ I also use dependencies in thirdparty folder.
 - [data.h](https://github.com/HowardHinnant/date): A date and time library based on standard chrono header
 
 
-### Compile , Test
+## Build instructions
 
 ```bash
 mkdir build
