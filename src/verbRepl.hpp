@@ -38,7 +38,7 @@ Replxx::completions_t hook_completion(std::string const &context, int &contextLe
   }
 
   // add completion for command
-  for (auto const &e : std::vector<std::string>{".quit", ".exit", "begin", "end"}) {
+  for (auto const &e : std::vector<std::string>{".quit", ".exit", "begin", "end", "list"}) {
     if (e.rfind(context, 0) == 0) {
       Replxx::Color c(Replxx::Color::DEFAULT);
       completions.emplace_back((e + " ").c_str(), c);
@@ -104,6 +104,13 @@ public:
 
       if (command == "begin" || command == "end") {
         controller.add(task, command);
+        continue;
+      }
+      if (command == "list") {
+        auto tasks = controller.list(5);
+        for (auto & i : tasks) {
+          fmt::print("{: <30} {: <10} {}\n", std::get<0>(i), std::get<1>(i), std::get<2>(i));
+        }
         continue;
       }
 
