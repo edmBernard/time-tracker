@@ -5,7 +5,7 @@ Minimalist command line tool to track time spend
 
 We use [vcpkg](https://github.com/Microsoft/vcpkg) to manage dependencies
 
-KoTH-snake depend on:
+time-tracker depend on:
 - [cxxopts](https://github.com/jarro2783/cxxopts): Command line argument parsing
 - [fmt](https://fmt.dev/latest/index.html): A modern formatting library
 - [replxx](https://github.com/AmokHuginnsson/replxx): A small, portable GNU readline replacement for Linux, Windows and MacOS.
