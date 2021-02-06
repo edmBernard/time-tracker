@@ -13,8 +13,8 @@ find_package(replxx CONFIG REQUIRED)
 #**************************************************************************************************
 # Include *****************************************************************************************
 include_directories(${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/include)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/third-party)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/third-party)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/third-party/cxxsubs/include)
 
 # get_cmake_property(_variableNames VARIABLES)
