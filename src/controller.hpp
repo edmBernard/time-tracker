@@ -60,14 +60,15 @@ public:
     }
     infile.close();
 
-    return std::vector<std::tuple<std::string, std::string, std::string>>(tasks.end()-limit, tasks.end());;
+    const auto beginIt = limit > tasks.size() ? tasks.begin() : tasks.end()-limit;
+    return std::vector<std::tuple<std::string, std::string, std::string>>(beginIt, tasks.end());
   }
 
   std::vector<std::string> taskList(const std::string &search) const {
 
     std::ifstream infile;
     std::string line;
-    std::set<std::string> tasks;
+    std::set<std::string> tags;
 
     infile.open(this->filename, std::ios_base::in);
     while (getline(infile, line)) {
@@ -87,12 +88,12 @@ public:
 
       std::size_t found = taskName.rfind(search, 0);
       if (found == 0 || search.empty()) {
-        tasks.insert(taskName);
+        tags.insert(taskName);
       }
     }
     infile.close();
 
-    return std::vector<std::string>(tasks.begin(), tasks.end());
+    return std::vector<std::string>(tags.begin(), tags.end());
   }
 
 private:
