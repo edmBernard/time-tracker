@@ -4,6 +4,7 @@
 
 #include <cxxsubs.hpp>
 #include <replxx.hxx>
+#include <spdlog/spdlog.h>
 
 #include <fstream>
 
@@ -102,7 +103,7 @@ public:
         if (result.size() == 2) {
           controller.add(result[1], result[0]);
         } else {
-          std::cout << "Wrong number of argument to begin/end command" << std::endl;
+          spdlog::error("Wrong number of argument to begin/end command");
         }
         continue;
       }
@@ -115,10 +116,10 @@ public:
         continue;
       }
 
-      std::cout << "Unknown command" << std::endl;
+      spdlog::error("Unknown command: {}", result[0]);
     }
 
     rx.history_save(history_file);
-    std::cout << "Exiting Time Tracker" << std::endl;
+    spdlog::info("Exiting Time Tracker");
   };
 };

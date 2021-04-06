@@ -3,6 +3,7 @@
 #include <controller.hpp>
 
 #include <cxxsubs.hpp>
+#include <spdlog/spdlog.h>
 
 #include <fstream>
 
@@ -27,7 +28,7 @@ public:
     }
 
     if (this->parse_result->count("show") ^ this->parse_result->count("exec_name")) {
-      std::cout << "Error: parsing options: 'show' and 'exec_name' must be filled" << std::endl;
+      spdlog::error("Parsing options: 'show' and 'exec_name' must be filled");
       exit(1);
     }
   }
