@@ -43,7 +43,8 @@ jobs:
                         fmt:${{ matrix.config.triplet }} \
                         replxx:${{ matrix.config.triplet }} \
                         date:${{ matrix.config.triplet }} \
-                        spdlog:${{ matrix.config.triplet }}
+                        spdlog:${{ matrix.config.triplet }} \
+                        nlohmann-json:${{ matrix.config.triplet }}
     - name: check vcpkg
       run: |
         cd vcpkg

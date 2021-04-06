@@ -11,6 +11,7 @@ find_package(fmt CONFIG REQUIRED)
 find_package(replxx CONFIG REQUIRED)
 find_package(date CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
+find_package(nlohmann_json REQUIRED)
 
 #**************************************************************************************************
 # Include *****************************************************************************************
@@ -50,4 +51,4 @@ SET(SOURCES
 #**************************************************************************************************
 # Make configuration ******************************************************************************
 add_executable(timetracker ${SOURCES})
-target_link_libraries(timetracker -pthread -lstdc++fs fmt::fmt spdlog::spdlog REPLXX::replxx date::date date::date-tz)
+target_link_libraries(timetracker -pthread -lstdc++fs fmt::fmt spdlog::spdlog REPLXX::replxx date::date date::date-tz nlohmann_json::nlohmann_json)

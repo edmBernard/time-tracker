@@ -3,45 +3,60 @@
 
 #include <date/date.h>
 #include <fmt/format.h>
+#include <spdlog/spdlog.h>
+#include <nlohmann/json.hpp>
 
 #include <chrono>
 #include <fstream>
 #include <set>
 #include <string>
 #include <tuple>
+#include <filesystem>
+#include <iostream>
+
 
 class Controller {
+  using json = nlohmann::json;
 public:
-  Controller(std::string filename = "timetracker.csv")
+  Controller(std::string filename = "timetracker.json")
       : filename(filename) {
+    if (!std::filesystem::exists(this->filename)) {
+      std::ofstream outfile;
+      outfile.open(this->filename, std::ios_base::app); // append instead of overwrite
+      outfile << "[\n";
+      outfile.close();
+    }
+
   }
 
   void add(const std::string &task, const std::string &status) {
     std::ofstream outfile;
     outfile.open(this->filename, std::ios_base::app); // append instead of overwrite
-    outfile << lineFormatter(std::chrono::system_clock::now(), status, task);
+    outfile << lineFormatter(std::chrono::system_clock::now(), status, task) << "\n,\n";
     outfile.close();
   }
 
   std::vector<std::tuple<std::string, std::string, std::string>> list(int limit) const {
+
     std::ifstream infile;
     std::string line;
-    const char delim = ';';
-
     std::vector<std::tuple<std::string, std::string, std::string>> tasks;
 
     infile.open(this->filename, std::ios_base::in);
     while (getline(infile, line)) {
       std::stringstream ss(line);
 
-      std::string date;
-      std::string status;
-      std::string task;
-      std::getline(ss, date, delim);
-      std::getline(ss, status, delim);
-      std::getline(ss, task, delim);
+      if (line == "[") {
+        // escape the first line that contain only one [
+        continue;
+      }
+      if (line == ",") {
+        // escape intermediate line that contain only one ,
+        continue;
+      }
 
-      tasks.push_back({date, status, task});
+      json j = json::parse(line);
+      tasks.push_back({j["date_full"], j["ph"], j["name"]});
     }
     infile.close();
 
@@ -49,24 +64,30 @@ public:
   }
 
   std::vector<std::string> taskList(const std::string &search) const {
+
     std::ifstream infile;
     std::string line;
-    const char delim = ';';
-
     std::set<std::string> tasks;
+
     infile.open(this->filename, std::ios_base::in);
     while (getline(infile, line)) {
       std::stringstream ss(line);
 
-      std::string trash;
-      std::getline(ss, trash, delim); // discard date
-      std::getline(ss, trash, delim); // discard marker
+      if (line == "[") {
+        // escape the first line that contain only one [
+        continue;
+      }
+      if (line == ",") {
+        // escape intermediate line that contain only one ,
+        continue;
+      }
 
-      std::string task;
-      std::getline(ss, task, delim);
-      std::size_t found = task.rfind(search, 0);
+      json j = json::parse(line);
+      const std::string taskName = j["name"].get<std::string>();
+
+      std::size_t found = taskName.rfind(search, 0);
       if (found == 0 || search.empty()) {
-        tasks.insert(task);
+        tasks.insert(taskName);
       }
     }
     infile.close();
@@ -75,12 +96,20 @@ public:
   }
 
 private:
-  std::string lineFormatter(const std::chrono::time_point<std::chrono::system_clock> &time_point, const std::string &tag, const std::string &task) {
-    std::string date = dateFormatter(time_point);
-    return fmt::format("{0};{1};{2};\n", date, tag, task);
+  std::string lineFormatter(const std::chrono::time_point<std::chrono::system_clock> &time_point, const std::string &status, const std::string &task) {
+    json j = {
+      {"name", task},
+      {"cat", "PERF"},
+      {"ph", status == "begin" ? "B" : "E"},
+      {"pid", pidFormatter(time_point)},
+      {"tid", task},
+      {"ts", std::chrono::duration_cast<std::chrono::minutes>(time_point.time_since_epoch()).count()},
+      {"date_full", dateFormatter(time_point)}
+    };
+    return  j.dump();
   }
 
-  std::string dateFormatter(const std::chrono::time_point<std::chrono::system_clock> &time_point) {
+  static std::string dateFormatter(const std::chrono::time_point<std::chrono::system_clock> &time_point) {
     using namespace date;
     auto daypoint = floor<days>(time_point);
     auto ymd = year_month_day(daypoint);         // calendar date
@@ -95,6 +124,19 @@ private:
     auto s = tod.seconds().count();
 
     return fmt::format("{0}-{1:02}-{2:02} {3:02}:{4:02}:{5:02}", y, m, d, h, min, s);
+  }
+
+  //! The pid represent the day of the years
+  static int pidFormatter(const std::chrono::time_point<std::chrono::system_clock> &time_point) {
+    using namespace date;
+
+    const auto daypoint = floor<days>(time_point);
+    const auto ymd = year_month_day{daypoint};
+
+    // calculating the year and the day of the year
+    const auto year = ymd.year();
+    const auto year_day = daypoint - sys_days{year/January/0};
+    return year_day.count();
   }
 
   std::string filename;

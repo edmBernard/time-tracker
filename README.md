@@ -11,9 +11,10 @@ This project depends on:
 - [replxx](https://github.com/AmokHuginnsson/replxx): A small, portable GNU readline replacement for Linux, Windows and MacOS.
 - [date](https://github.com/HowardHinnant/date): A date and time library based on standard chrono header
 - [spdlog](https://github.com/gabime/spdlog): Very fast, header-only/compiled, C++ logging library
+- [nlohmann-json](https://github.com/nlohmann/json): JSON for Modern C++
 
 ```
-./vcpkg install cxxopts fmt replxx date spdlog
+./vcpkg install cxxopts fmt replxx date spdlog nlohmann-json
 ```
 
 ### Embed dependencies:
