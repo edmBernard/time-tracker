@@ -9,9 +9,11 @@ time-tracker depend on:
 - [cxxopts](https://github.com/jarro2783/cxxopts): Command line argument parsing
 - [fmt](https://fmt.dev/latest/index.html): A modern formatting library
 - [replxx](https://github.com/AmokHuginnsson/replxx): A small, portable GNU readline replacement for Linux, Windows and MacOS.
+- [date](https://github.com/HowardHinnant/date): A date and time library based on standard chrono header
+- [spdlog](https://github.com/gabime/spdlog): Very fast, header-only/compiled, C++ logging library
 
 ```
-./vcpkg install cxxopts fmt replxx
+./vcpkg install cxxopts fmt replxx date spdlog
 ```
 
 ### Embed dependencies:
@@ -19,8 +21,6 @@ time-tracker depend on:
 I also use dependencies in thirdparty folder.
 
 - [cxxsubs](https://github.com/edmBernard/cxxsubs): A Library to add Subcommand to cxxopts
-- [data.h](https://github.com/HowardHinnant/date): A date and time library based on standard chrono header
-
 
 ## Build instructions
 

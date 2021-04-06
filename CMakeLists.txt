@@ -2,13 +2,15 @@ project(time-tracker)
 
 #**************************************************************************************************
 # General cMake settings **************************************************************************
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.14)
 
 #**************************************************************************************************
 # Find Package ************************************************************************************
 find_package(cxxopts CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
 find_package(replxx CONFIG REQUIRED)
+find_package(date CONFIG REQUIRED)
+find_package(spdlog CONFIG REQUIRED)
 
 #**************************************************************************************************
 # Include *****************************************************************************************
@@ -25,8 +27,11 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/third-party/cxxsubs/include)
 
 #**************************************************************************************************
 # Set compiler ************************************************************************************
-set(CMAKE_CXX_FLAGS "-fPIC -fpermissive -std=c++17")
-
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+  add_compile_options(/std:c++latest /Oy /utf-8)
+else()
+  add_compile_options(-std=c++2a -fPIC -O3 -fno-omit-frame-pointer)
+endif()
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
@@ -45,5 +50,4 @@ SET(SOURCES
 #**************************************************************************************************
 # Make configuration ******************************************************************************
 add_executable(timetracker ${SOURCES})
-set_property(TARGET timetracker PROPERTY CXX_STANDARD 17)
-target_link_libraries(timetracker -pthread -lstdc++fs fmt::fmt REPLXX::replxx)
+target_link_libraries(timetracker -pthread -lstdc++fs fmt::fmt spdlog::spdlog REPLXX::replxx date::date date::date-tz)
